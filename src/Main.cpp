@@ -31,12 +31,14 @@
 #include <iostream>
 #include <cstring>
 #include <glm/gtc/matrix_transform.hpp>
+#include <emscripten/html5.h>
 
-static glmwasm::Camera camera;
-static glmwasm::DefaultTexturePack texturePack;
-static std::vector<glmwasm::Server *> serverList;
-static glmwasm::Server *selectedServer = nullptr;
-static glmwasm::World *selectedWorld = nullptr;
+glmwasm::Camera camera; // NOLINT
+glmwasm::DefaultTexturePack texturePack; // NOLINT
+std::vector<glmwasm::Server *> serverList;
+glmwasm::Server *selectedServer = nullptr;
+glmwasm::World *selectedWorld = nullptr;
+EMSCRIPTEN_WEBGL_CONTEXT_HANDLE contextHandle;
 
 /**
  * The main function to be called when the wasm module is loaded.
@@ -44,6 +46,10 @@ static glmwasm::World *selectedWorld = nullptr;
  * @return 0.
  */
 int main() {
+    // glm-wasm vars
+    camera = glmwasm::Camera();
+    texturePack = glmwasm::DefaultTexturePack();
+    serverList = std::vector<glmwasm::Server *>();
     std::cout << "glm-wasm client loaded." << std::endl;
     return 0;
 }
@@ -405,10 +411,24 @@ bool EMSCRIPTEN_KEEPALIVE addBlockTrait(char *cStrName, char *cStrValue) {
  * @param width the width of the canvas.
  * @param height the height of the canvas.
  */
-void EMSCRIPTEN_KEEPALIVE initGl(float width, float height) {
+void EMSCRIPTEN_KEEPALIVE initGl(float width, float height, char *canvas) {
     glmwasm::OpenGL::width = width;
     glmwasm::OpenGL::height = height;
+    // WebGL setup.
+    EmscriptenWebGLContextAttributes attributes;
+    attributes.alpha = 1;
+    attributes.majorVersion = 2;
+    attributes.minorVersion = 0;
+    contextHandle = emscripten_webgl_create_context(canvas, &attributes);
+    emscripten_webgl_make_context_current(contextHandle);
     texturePack.init();
+}
+
+/**
+ * @return the WebGL context handle.
+ */
+int EMSCRIPTEN_KEEPALIVE getGlContextHandle() {
+    return contextHandle;
 }
 
 /**
