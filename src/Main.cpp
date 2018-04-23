@@ -411,7 +411,7 @@ bool EMSCRIPTEN_KEEPALIVE addBlockTrait(char *cStrName, char *cStrValue) {
  * @param width the width of the canvas.
  * @param height the height of the canvas.
  */
-void EMSCRIPTEN_KEEPALIVE initGl(float width, float height, char *canvas) {
+void EMSCRIPTEN_KEEPALIVE initGl(float width, float height) {
     glmwasm::OpenGL::width = width;
     glmwasm::OpenGL::height = height;
     // WebGL setup.
@@ -419,7 +419,7 @@ void EMSCRIPTEN_KEEPALIVE initGl(float width, float height, char *canvas) {
     attributes.alpha = 1;
     attributes.majorVersion = 2;
     attributes.minorVersion = 0;
-    contextHandle = emscripten_webgl_create_context(canvas, &attributes);
+    contextHandle = emscripten_webgl_create_context("#glCanvas", &attributes);
     emscripten_webgl_make_context_current(contextHandle);
     texturePack.init();
 }
@@ -453,6 +453,7 @@ void EMSCRIPTEN_KEEPALIVE resizeClient(float width, float height) {
  * Renders blocks to the screen.
  */
 void EMSCRIPTEN_KEEPALIVE render() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // NOLINT
     if (selectedServer != nullptr && selectedWorld != nullptr) {
         texturePack.renderBlocks(camera, selectedWorld->getChunkMap());
     }
