@@ -419,7 +419,7 @@ void EMSCRIPTEN_KEEPALIVE initGl(float width, float height) {
     attributes.alpha = 1;
     attributes.majorVersion = 2;
     attributes.minorVersion = 0;
-    contextHandle = emscripten_webgl_create_context("#glCanvas", &attributes);
+    contextHandle = emscripten_webgl_create_context("glCanvas", &attributes);
     emscripten_webgl_make_context_current(contextHandle);
     texturePack.init();
 }
