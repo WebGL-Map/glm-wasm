@@ -25,6 +25,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <emscripten.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 
 std::string *glmwasm::OpenGL::vertex_shader_vc_source;
 
@@ -64,7 +65,7 @@ void glmwasm::OpenGL::printShaderInfoLog(GLuint shaderId) {
     if (infoLogLen > 1) {
         char infoLog[infoLogLen];
         glGetShaderInfoLog(shaderId, infoLogLen, nullptr, infoLog);
-        emscripten_log(EM_LOG_CONSOLE, "Shader load error: $s", infoLog);
+        std::cout << "Shader load error: " << infoLog << std::endl;
     }
 }
 
@@ -117,7 +118,7 @@ void glmwasm::OpenGL::shaderSetup() {
     shaderProgram_vc->validate();
 
     if (!shaderProgram_vc->verify()) {
-        emscripten_log(EM_LOG_CONSOLE, "Shader program error.");
+        std::cout << "Shader program error.";
     }
 
     model = glm::mat4();

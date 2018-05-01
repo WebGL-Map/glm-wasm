@@ -24,9 +24,10 @@
 #include "Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <emscripten.h>
+#include <iostream>
 
 void glmwasm::Camera::rotateMatrix() {
-    emscripten_log(EM_LOG_CONSOLE, "Method not implemented yet.");
+    std::cout << "Method not implemented yet.";
 }
 
 bool glmwasm::Camera::update() {
