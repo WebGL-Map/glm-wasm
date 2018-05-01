@@ -77,7 +77,8 @@ void glmwasm::OpenGL::standardSetup() {
 }
 
 void glmwasm::OpenGL::shaderSetup() {
-    vertex_shader_vc_source = new std::string("attribute vec2 position;\n"
+    vertex_shader_vc_source = new std::string("precision highp float;\n"
+                                              "attribute vec2 position;\n"
                                               "attribute vec3 color;\n"
                                               "\n"
                                               "uniform mat4 model;\n"
@@ -91,7 +92,8 @@ void glmwasm::OpenGL::shaderSetup() {
                                               "    mat4 mvp = projection * view * model;\n"
                                               "    gl_Position = mvp * vec4(position.x, position.y, 0, 1.0);\n"
                                               "}");
-    fragment_shader_vc_source = new std::string("varying vec4 oColor;\n"
+    fragment_shader_vc_source = new std::string("precision lowp float;\n"
+                                                "varying vec4 oColor;\n"
                                                 "\n"
                                                 "void main() {\n"
                                                 "    gl_FragColor = oColor;\n"
