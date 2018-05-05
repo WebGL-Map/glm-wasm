@@ -27,6 +27,11 @@ std::string *glmwasm::Server::getName() const {
     return name;
 }
 
+void glmwasm::Server::setName(std::string *name) {
+    delete this->name;
+    this->name= name;
+}
+
 std::string *glmwasm::Server::getIp() const {
     return ip;
 }

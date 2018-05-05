@@ -79,6 +79,13 @@ namespace glmwasm {
         std::string *getName() const;
 
         /**
+         * Renames this server.
+         *
+         * @param name the new name of the server.
+         */
+        void setName(std::string *name);
+
+        /**
          * @return the ip address of the server.
          */
         std::string *getIp() const;

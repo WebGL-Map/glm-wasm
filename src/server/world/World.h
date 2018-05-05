@@ -50,6 +50,16 @@ namespace glmwasm {
         const std::string *name;
 
         /**
+         * The spawn point of the world.
+         */
+        glm::vec3 spawnPoint;
+
+        /**
+         * States if this world is the default world.
+         */
+        bool idefault;
+
+        /**
          * The list of chunks this world has.
          */
         std::map<int, std::map<int, Chunk *>> chunkMap;
@@ -57,7 +67,7 @@ namespace glmwasm {
         /**
          * A list of players for this world.
          */
-        std::map<std::string, Player*> playerMap;
+        std::map<std::string, Player *> playerMap;
 
     public:
 
@@ -66,8 +76,11 @@ namespace glmwasm {
          *
          * @param uuid the uuid of this world.
          * @param name the name of this world.
+         * @param x the x position of the spawn point.
+         * @param y the y position of the spawn point.
+         * @param z the z position of the spawn point.
          */
-        World(const std::string *uuid, const std::string *name);
+        World(const std::string *uuid, const std::string *name, bool isDefault, float x, float y, float z);
 
         /**
          * @return the uuid of this world.
@@ -78,6 +91,16 @@ namespace glmwasm {
          * @return the name of this world.
          */
         const std::string *getName() const;
+
+        /**
+         * @return true if this world is the default world false other wise.
+         */
+        bool isDefault() const;
+
+        /**
+         * @return the spawn point of the world.
+         */
+        const glm::vec3 &getSpawnPoint() const;
 
         /**
          * @return the list of chunks this world has.

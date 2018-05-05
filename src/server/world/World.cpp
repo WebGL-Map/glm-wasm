@@ -27,6 +27,10 @@ const std::string *glmwasm::World::getUuid() const {
     return uuid;
 }
 
+bool glmwasm::World::isDefault() const {
+    return idefault;
+}
+
 std::map<int, std::map<int, glmwasm::Chunk *>> &glmwasm::World::getChunkMap() {
     return chunkMap;
 }
@@ -62,7 +66,12 @@ const std::string *glmwasm::World::getName() const {
     return name;
 }
 
-glmwasm::World::World(const std::string *uuid, const std::string *name) : uuid(uuid), name(name) {}
+glmwasm::World::World(const std::string *uuid, const std::string *name, bool isDefault, float x, float y, float z) :
+        uuid(uuid), name(name), idefault(isDefault) {
+    this->spawnPoint.x = x;
+    this->spawnPoint.y = y;
+    this->spawnPoint.z = z;
+}
 
 glmwasm::World::~World() {
     for (auto const &kvp : chunkMap) {
@@ -72,4 +81,8 @@ glmwasm::World::~World() {
     }
     delete uuid;
     delete name;
+}
+
+const glm::vec3 &glmwasm::World::getSpawnPoint() const {
+    return spawnPoint;
 }

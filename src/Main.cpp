@@ -214,16 +214,39 @@ bool EMSCRIPTEN_KEEPALIVE selectServer(char *cStrIp, char *cStrPort) {
 }
 
 /**
+ * Attempts to change the name of a server.
+ *
+ * @param cStrIp the ip address of the remote server.
+ * @param cStrPort the port of the remote server.
+ * @param cStrName the new name of the server.
+ *
+ * @return true if the name of the server was changed false otherwise.
+ */
+bool EMSCRIPTEN_KEEPALIVE renameServer(char *cStrIp, char *cStrPort, char *cStrName) {
+    for (auto &server : serverList) {
+        if (std::strcmp(server->getIp()->c_str(), cStrIp) == 0 &&
+            std::strcmp(server->getPort()->c_str(), cStrPort) == 0) {
+            server->setName(new std::string(cStrName));
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * Attempts to add a world to a server.
  *
  * @param cStrIp the ip address of the remote server.
  * @param cStrPort the port of the remote server.
  * @param cStrUuid the uuid of the world.
  * @param cStrName the name of the world.
+ * @param x the x position of the spawn point.
+ * @param y the y position of the spawn point.
+ * @param z the z position of the spawn point.
  *
  * @return true if the world was added false otherwise.
  */
-bool EMSCRIPTEN_KEEPALIVE addWorld(char *cStrIp, char *cStrPort, char *cStrUuid, char *cStrName) {
+bool EMSCRIPTEN_KEEPALIVE addWorld(char *cStrIp, char *cStrPort, char *cStrUuid, char *cStrName, bool isDefault, float x, float y, float z) {
     for (auto &server : serverList) {
         if (std::strcmp(server->getIp()->c_str(), cStrIp) == 0 &&
             std::strcmp(server->getPort()->c_str(), cStrPort) == 0) {
@@ -231,7 +254,7 @@ bool EMSCRIPTEN_KEEPALIVE addWorld(char *cStrIp, char *cStrPort, char *cStrUuid,
                 if (std::strcmp(world.first.c_str(), cStrUuid) != 0) {
                     auto *uuid = new std::string(cStrUuid);
                     auto *name = new std::string(cStrName);
-                    auto *newWorld = new glmwasm::World(uuid, name);
+                    auto *newWorld = new glmwasm::World(uuid, name, isDefault, x, y, z);
                     auto returnVal = server->getWorldMap().emplace(*uuid, newWorld);
                     if (!returnVal.second) {
                         delete newWorld;
