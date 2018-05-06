@@ -59,12 +59,14 @@ void glmwasm::DataManager::removeBlockTypes() {
     for (auto &blockType : blockTypes) {
         delete blockType;
     }
+    blockTypes.clear();
 }
 
 void glmwasm::DataManager::removeBlockTraits() {
     for (auto &blockTrait : blockTraits) {
         delete blockTrait;
     }
+    blockTraits.clear();
 }
 
 std::pair<glmwasm::BlockType*, bool> glmwasm::DataManager::getAndOrAddBlockType(std::string *modId, std::string *blockId) {

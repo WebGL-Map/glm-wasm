@@ -489,6 +489,7 @@ void EMSCRIPTEN_KEEPALIVE cleanUp() {
     for (auto &server : serverList) {
         delete server;
     }
+    serverList.clear();
     glmwasm::DataManager::removeBlockTraits();
     glmwasm::DataManager::removeBlockTypes();
 }
