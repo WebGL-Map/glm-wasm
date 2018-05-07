@@ -306,7 +306,7 @@ bool EMSCRIPTEN_KEEPALIVE selectWorld(char *cStrIp, char *cStrPort, char *cStrUu
         if (std::strcmp(server->getIp()->c_str(), cStrIp) == 0 &&
             std::strcmp(server->getPort()->c_str(), cStrPort) == 0) {
             for (auto &world : server->getWorldMap()) {
-                if (std::strcmp(world.first.c_str(), cStrUuid) != 0) {
+                if (std::strcmp(world.first.c_str(), cStrUuid) == 0) {
                     selectedWorld = world.second;
                     return true;
                 }
@@ -334,7 +334,7 @@ bool EMSCRIPTEN_KEEPALIVE addOrUpdateChunk(char *cStrIp, char *cStrPort, char *c
         if (std::strcmp(server->getIp()->c_str(), cStrIp) == 0 &&
             std::strcmp(server->getPort()->c_str(), cStrPort) == 0) {
             for (auto &world : server->getWorldMap()) {
-                if (std::strcmp(world.first.c_str(), cStrUuid) != 0) {
+                if (std::strcmp(world.first.c_str(), cStrUuid) == 0) {
                     glmwasm::Chunk *uChunk = nullptr;
                     if (world.second->getChunkMap()[x][z] == nullptr) {
                         uChunk = new glmwasm::Chunk(x, 0, z);
