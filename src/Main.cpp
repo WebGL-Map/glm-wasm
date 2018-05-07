@@ -250,19 +250,15 @@ bool EMSCRIPTEN_KEEPALIVE addWorld(char *cStrIp, char *cStrPort, char *cStrUuid,
     for (auto &server : serverList) {
         if (std::strcmp(server->getIp()->c_str(), cStrIp) == 0 &&
             std::strcmp(server->getPort()->c_str(), cStrPort) == 0) {
-            for (auto &world : server->getWorldMap()) {
-                if (std::strcmp(world.first.c_str(), cStrUuid) != 0) {
-                    auto *uuid = new std::string(cStrUuid);
-                    auto *name = new std::string(cStrName);
-                    auto *newWorld = new glmwasm::World(uuid, name, isDefault, x, y, z);
-                    auto returnVal = server->getWorldMap().emplace(*uuid, newWorld);
-                    if (!returnVal.second) {
-                        delete newWorld;
-                        return false;
-                    }
-                    return true;
-                }
+            auto *uuid = new std::string(cStrUuid);
+            auto *name = new std::string(cStrName);
+            auto *newWorld = new glmwasm::World(uuid, name, isDefault, x, y, z);
+            auto returnVal = server->getWorldMap().emplace(*uuid, newWorld);
+            if (!returnVal.second) {
+                delete newWorld;
+                return false;
             }
+            return true;
         }
     }
     return false;
@@ -493,4 +489,5 @@ void EMSCRIPTEN_KEEPALIVE cleanUp() {
     glmwasm::DataManager::removeBlockTraits();
     glmwasm::DataManager::removeBlockTypes();
 }
+
 }
